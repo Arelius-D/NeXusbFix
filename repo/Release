@@ -6,4 +6,10 @@ Codename: bookworm
 Architectures: all
 Components: main
 Description: NeXusbFix APT Repository
-
+Date: Sun, 09 Feb 2025 03:32:23 +0000
+MD5Sum:
+ 958d1fcbc233a75c169b0066e659b2ca 697 Packages.gz
+SHA1:
+ 38f73239ad691fc1d4e725be7a9fac17c051841d 697 Packages.gz
+SHA256:
+ 52f5373228d8e922205e20b09a66e1ca9e330f4aa05aeef4b8f3f6817ad2e431 697 Packages.gz
