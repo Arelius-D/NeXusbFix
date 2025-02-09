@@ -1,5 +1,17 @@
+# Ignore build artifacts
 *.deb
 *.tar.gz
 *.zip
 *.log
 *.bak
+
+# Ignore debian folder if it contains build-specific files not needed for the repo
+# But generally, track the debian directory for packaging metadata
+# /debian/*
+
+# Ignore built package repositories
+/repo/*
+
+# Ignore temporary files from the system or IDE
+*.swp
+*.tmp
