@@ -1,0 +1,9 @@
+Origin: NeXusbFix Repo
+Label: NeXusbFix
+Suite: stable
+Version: 1.0
+Codename: bookworm
+Architectures: all
+Components: main
+Description: NeXusbFix APT Repository
+
