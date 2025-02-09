@@ -1,0 +1,10 @@
+Package: nexusbfix
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: all
+Essential: no
+Maintainer: Arelius-D <arelius-d@outlook.com>
+Description: NeXusbFix - USB Check & Fix Tool
+ A lightweight utility to diagnose, fix, and manage USB devices
+ on Debian-based systems.
