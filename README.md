@@ -4,28 +4,24 @@
 NeXusbFix is a **lightweight command-line utility** designed to **diagnose, fix, and manage USB devices** on Debian-based systems.
 
 🔹 **Key Features:**
-- Detects and lists all connected USB devices
-- Provides **automated fixes** for common USB connection issues
-- Restarts systemd services related to USB handling
-- Includes a **dry-run mode** for previewing actions
-- Safe, **non-destructive operations**
+- Detects and lists all connected USB devices  
+- Provides **automated fixes** for common USB connection issues  
+- Restarts systemd services related to USB handling  
+- Checks and optionally **repairs network interfaces**  
+- Includes a **dry-run mode** for previewing actions  
+- Safe, **non-destructive operations**  
+- **Prompts for system updates** if necessary  
+- **Reboot prompt** if critical changes were made  
 
-🚀 **Why Use NeXusbFix?**
+🚀 **Why Use NeXusbFix?**  
 If you've ever had **USB devices randomly disconnect, stop responding, or fail to mount**, this tool provides **quick, automated fixes** without requiring a full system restart.
 
 ---
 
-## 📦 Installation (APT Repository)
-NeXusbFix is available via a **GitHub-hosted APT repository**, allowing easy installation with `apt install`.
+## 📦 Installation
+NeXusbFix is installed **only** using APT.
 
-### **Step 1: Add the APT Repository**
-```bash
-wget -O- https://raw.githubusercontent.com/Arelius-D/NeXusbFix/main/repo/public.key | sudo apt-key add -
-echo "deb https://raw.githubusercontent.com/Arelius-D/NeXusbFix/main/repo ./" | sudo tee /etc/apt/sources.list.d/nexusbfix.list
-sudo apt update
-```
-
-### **Step 2: Install NeXusbFix**
+### **Install NeXusbFix**
 ```bash
 sudo apt install nexusbfix
 ```
@@ -41,41 +37,67 @@ Once installed, you can run NeXusbFix using:
 ```bash
 sudo nexusbfix
 ```
-This will **detect and attempt to fix any USB issues automatically.**
+This will **detect and attempt to fix any USB issues automatically.**  
+It will also **check network interfaces** and **prompt for system updates** if necessary.
 
 ### **Dry-Run Mode (Preview Fixes)**
 ```bash
 sudo nexusbfix --dry-run
 ```
-🔹 **What this does:**
-- **Shows** what actions would be taken, without applying changes.
-- Ideal for reviewing system issues **before making modifications.**
+🔹 **What this does:**  
+- **Shows** what actions would be taken, without applying changes.  
+- Ideal for reviewing system issues **before making modifications.**  
 
 ### **Verbose Mode (Detailed Logging)**
 ```bash
 sudo nexusbfix --verbose
 ```
-🔹 **What this does:**
-- Provides detailed output of each step NeXusbFix takes.
-- Useful for debugging USB-related issues.
+🔹 **What this does:**  
+- Provides detailed output of each step NeXusbFix takes.  
+- Useful for debugging USB-related issues.  
 
-### **Force Restart USB Services**
+### **Auto-Confirm All Fixes**
 ```bash
-sudo nexusbfix --restart-usb
+sudo nexusbfix --yes
 ```
-🔹 **What this does:**
-- **Restarts systemd services** that manage USB devices.
-- Useful for recovering unresponsive USB devices **without rebooting.**
+🔹 **What this does:**  
+- Automatically answers "yes" to any prompts (e.g., system updates, interface repairs, reboot).  
+- Useful for automation or scripting.  
 
 ---
 
-## ⚙️ Advanced Options
-| Command | Description |
-|---------|-------------|
-| `--dry-run` | Simulates a scan and shows what would be fixed |
-| `--verbose` | Provides more detailed logs |
-| `--restart-usb` | Restarts USB-related services |
-| `--yes` | Auto-confirms all fixes without prompting |
+## ⚙️ What NeXusbFix Actually Does
+
+### **Step 1: System Update Check**
+- **Reads** `/var/log/dpkg.log` to check when the last system update happened.  
+- If the update is **older than 24 hours**, it **prompts** the user to update.  
+- If `--yes` is used, it **automatically updates** without prompting.  
+- If `--dry-run` is used, it **simulates the update** but doesn’t execute it.  
+
+### **Step 2: Reload systemd**
+- Runs `systemctl daemon-reexec` to **refresh systemd** in case of USB-related service issues.  
+- If `--dry-run` is used, it **prints the command** but does not execute it.  
+
+### **Step 3: Scan USB Devices**
+- Uses `lsusb` to list all detected USB devices.  
+- If `--verbose` is enabled, it prints detailed USB device info.  
+
+### **Step 4: Check & Fix Network Interfaces**
+- **Scans Ethernet interfaces** (`ip link show | grep "state DOWN"`).  
+- If an interface is **down**, it **brings it up**.  
+- If `--dry-run` is enabled, it **does not execute**, only prints the fix.  
+- If `--yes` is used, it **automatically applies** all fixes without asking.  
+
+### **Step 5: Detect USB Storage Devices**
+- Uses `lsblk -S | grep usb` to list USB storage devices.  
+- **Excludes optical drives (`srX`)** from detection.  
+- Prints **detected USB storage devices**.  
+
+### **Step 6: Reboot Prompt (If Required)**
+- If **system updates were applied** or **network interfaces were fixed**,  
+  - It **prompts** the user to reboot.  
+  - If `--yes` is used, it **automatically reboots**.  
+  - If `--dry-run` is used, it **only prints what would happen**.  
 
 ---
 
@@ -93,15 +115,10 @@ sudo apt remove --purge nexusbfix
 sudo apt autoremove
 ```
 
-To **remove the APT repository**, delete the source list:
-```bash
-sudo rm /etc/apt/sources.list.d/nexusbfix.list
-sudo apt update
-```
-
 ---
 
 ## 🛠 Troubleshooting
+
 **1️⃣ NeXusbFix is not found?**  
 Make sure it's installed:
 ```bash
@@ -121,11 +138,11 @@ sudo nexusbfix --restart-usb
 ---
 
 ## 💬 Contributing & Support
-🔹 **Report Issues**: Open an issue on [GitHub](https://github.com/Arelius-D/NeXusbFix/issues)
+🔹 **Report Issues**: Open an issue on [GitHub](https://github.com/Arelius-D/NeXusbFix/issues)  
 
-🔹 **Feature Requests**: If you have ideas, feel free to contribute!
+🔹 **Feature Requests**: If you have ideas, feel free to contribute!  
 
-🔹 **Maintainer**: [Arelius-D](https://github.com/Arelius-D)
+🔹 **Maintainer**: [Arelius-D](https://github.com/Arelius-D)  
 
 ---
 
@@ -139,4 +156,3 @@ NeXusbFix is released under the **MIT License**. See the [LICENSE](https://githu
 sudo apt install nexusbfix
 ```
 🔥 **Enjoy fast, reliable USB fixes on Debian-based systems!** 🚀
-
