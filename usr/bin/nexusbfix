@@ -1,0 +1,127 @@
+#!/bin/bash
+# usb_check_fix.sh v1.14
+# Removes all extra line breaks and ensures clean interface output.
+
+# Default flags
+DRY_RUN=false
+VERBOSE=false
+AUTO_YES=false
+REBOOT_NEEDED=false
+UPDATES_APPLIED=false
+INTERFACE_FIXED=false
+
+# Function to display help
+show_help() {
+  echo "Usage: $0 [--dry-run] [-v|--verbose] [-y|--yes]"
+  echo "Options:"
+  echo "  --dry-run   : Perform a dry run without making any changes."
+  echo "  -v, --verbose  : Show detailed output."
+  echo "  -y, --yes      : Automatic yes to prompts, performs actions without asking."
+}
+
+# Parse command-line arguments
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --dry-run) DRY_RUN=true ;;
+    -v|--verbose) VERBOSE=true ;;
+    -y|--yes) AUTO_YES=true ;;
+    -h|--help) show_help; exit 0 ;;
+    *) echo "Unknown parameter: $1"; show_help; exit 1 ;;
+  esac
+  shift
+done
+
+# Step 1: Clear Terminal
+clear
+echo "[INFO] Running USB Device Check & Fix..."
+echo "----------------------------------------"
+
+# Step 2: Check if system was updated recently
+echo "[INFO] Checking last system update timestamp..."
+LAST_UPGRADE=$(grep " upgrade " /var/log/dpkg.log | tail -1 | awk '{print $1, $2}')
+if [ -n "$LAST_UPGRADE" ]; then
+  LAST_UPGRADE_SEC=$(date -d "$LAST_UPGRADE" +%s)
+  CURRENT_TIME_SEC=$(date +%s)
+  TIME_DIFF=$((CURRENT_TIME_SEC - LAST_UPGRADE_SEC))
+
+  if [ "$TIME_DIFF" -lt 86400 ]; then  # Less than 24 hours old
+    echo "[INFO] System was updated recently. Skipping update check."
+  else
+    echo "[INFO] System update is older than 24 hours. Checking for updates..."
+    if [ "$DRY_RUN" = false ]; then
+      if [ "$AUTO_YES" = true ]; then
+        sudo apt update && sudo apt upgrade -y && UPDATES_APPLIED=true
+      else
+        read -p "Do you want to update the system before proceeding? (y/N) " update_choice
+        if [[ "$update_choice" =~ ^[Yy]$ ]]; then
+          sudo apt update && sudo apt upgrade -y && UPDATES_APPLIED=true
+        else
+          echo "[SKIPPED] System update skipped."
+        fi
+      fi
+    else
+      echo "[DRY-RUN] Would execute: apt update && apt upgrade -y"
+    fi
+  fi
+else
+  echo "[WARNING] No upgrade history found. Proceeding with normal update prompt."
+fi
+
+# Step 3: Reload systemd (if not dry-run)
+echo "[INFO] Reloading systemd..."
+if [ "$DRY_RUN" = false ]; then
+  sudo systemctl daemon-reexec
+else
+  echo "[DRY-RUN] Would execute: systemctl daemon-reexec"
+fi
+
+# Step 4: List USB Devices
+echo "[INFO] Scanning for USB devices..."
+lsusb_output=$(lsusb)
+[ "$VERBOSE" = true ] && echo "$lsusb_output"
+
+# Step 5: Fix Network Interfaces (Final Line Cleanup)
+INTERFACE_OUTPUT=""
+for iface in $(ip link show | awk -F ': ' '/: e/{print $2}' | sed 's/[^a-zA-Z0-9]//g'); do
+  state=$(ip link show "$iface" | grep "state DOWN")
+  if [ -n "$state" ]; then
+    INTERFACE_OUTPUT+="[FIX] Bringing up interface: $iface\n"
+    [ "$DRY_RUN" = false ] && sudo ip link set "$iface" up && INTERFACE_FIXED=true
+  else
+    INTERFACE_OUTPUT+="[OK] Interface $iface is already UP\n"
+  fi
+done
+
+# ✅ **Final Fix: Only Print Interface Header If Needed**
+if [ -n "$INTERFACE_OUTPUT" ]; then
+  echo "----------------------------------------"
+  echo -e "$INTERFACE_OUTPUT" | sed '/^\s*$/d'  # Remove any empty lines
+fi
+
+# Step 6: Detect USB Storage Devices (EXCLUDING `srX` devices)
+USB_STORAGE=$(lsblk -S | grep usb | awk '!/sr[0-9]/ {print $1}')
+if [ -n "$USB_STORAGE" ]; then
+  echo "----------------------------------------"
+  echo "[INFO] Checking for USB storage devices..."
+  echo "[OK] Found USB storage devices: $USB_STORAGE"
+fi
+
+# Step 7: Optional Reboot Prompt (Only if Something Actually Changed)
+if [[ "$UPDATES_APPLIED" = true || "$INTERFACE_FIXED" = true ]] && [ "$DRY_RUN" = false ]; then
+  echo "----------------------------------------"
+  if [ "$AUTO_YES" = true ]; then
+    echo "[INFO] Auto-yes enabled. Rebooting system..."
+    sudo reboot
+  else
+    read -p "System changes made. Do you want to reboot now? (y/N) " reboot_choice
+    if [[ "$reboot_choice" =~ ^[Yy]$ ]]; then
+      echo "[INFO] Rebooting system..."
+      sudo reboot
+    else
+      echo "[INFO] Please reboot manually if needed."
+    fi
+  fi
+fi
+
+echo "----------------------------------------"
+echo "[INFO] USB Device Check Completed."
