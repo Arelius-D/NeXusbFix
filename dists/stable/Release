@@ -2,12 +2,12 @@ Origin: NeXusbFix Repo
 Label: NeXusbFix
 Suite: stable
 Codename: stable
-Version: 1.15
-Architectures: arm64
+Version: 1.16
+Architectures: all arm64
 Components: main
 Description: APT repository for NeXusbFix
-Date: Mon, 10 Feb 2025 14:10:00 UTC
+Date: Mon, 10 Feb 2025 15:54:34 +0000
 Hashes:
   SHA256:
-    bd5579a93348cda52a849583d139744d85cb57f8107660ac6f65d62e3487a9f6 main/binary-arm64/Packages
-    9bf435ec8378ef92db3dd5811d8026ec85b0e25a6d33df1ea463c67963c1ea55 main/binary-arm64/Packages.gz
+    530f8900dc84837267e851cccf4830a36f28d8cf861d72bb759b5bce9186a3d0 main/binary-all/Packages.gz
+    530f8900dc84837267e851cccf4830a36f28d8cf861d72bb759b5bce9186a3d0 main/binary-arm64/Packages.gz
