@@ -11,11 +11,12 @@ INTERFACE_FIXED=false
 
 # Function to display help
 show_help() {
-  echo "Usage: $0 [--dry-run] [-v|--verbose] [-y|--yes]"
+  echo "Usage: $0 [--dry-run] [-v|--verbose] [-y|--yes] [--version]"
   echo "Options:"
   echo "  --dry-run   : Perform a dry run without making any changes."
   echo "  -v, --verbose  : Show detailed output."
   echo "  -y, --yes      : Automatic yes to prompts, performs actions without asking."
+  echo "  --version      : Show version information."
 }
 
 # Parse command-line arguments
@@ -25,6 +26,7 @@ while [[ "$#" -gt 0 ]]; do
     -v|--verbose) VERBOSE=true ;;
     -y|--yes) AUTO_YES=true ;;
     -h|--help) show_help; exit 0 ;;
+    --version) echo "nexusbfix version $VERSION"; exit 0 ;;  
     *) echo "Unknown parameter: $1"; show_help; exit 1 ;;
   esac
   shift

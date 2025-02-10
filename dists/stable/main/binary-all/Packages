@@ -5,10 +5,10 @@ Maintainer: Arelius-D <arelius-d@outlook.com>
 Installed-Size: 19
 Depends: usbutils, iproute2, systemd
 Filename: pool/main/n/nexusbfix/nexusbfix_1.16_all.deb
-Size: 4056
-MD5sum: 6ab40aa4fa17ce9253b43dfbccc9fccb
-SHA1: 66b0b4c2765306c85dbd9364f889d14bde53915e
-SHA256: 9186134dd315a087a53d8c62b09ef41eb4ebf3058d97bc942d1d114c91cb0df1
+Size: 4092
+MD5sum: 3d8c6ba584828732ea2eb1f4e1ff68b0
+SHA1: d52031316b4a965dcbb46eb465e305ed056c5b14
+SHA256: 2b9861417d124a355a8d560e070455d92e6c2ad1286fead89224615c8e6de79e
 Section: utils
 Priority: optional
 Description: USB Device Health Check & Auto-Fix Tool
