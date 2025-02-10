@@ -6,8 +6,8 @@ Version: 1.16
 Architectures: all arm64
 Components: main
 Description: APT repository for NeXusbFix
-Date: Mon, 10 Feb 2025 16:06:36 +0000
+Date: Mon, 10 Feb 2025 16:11:06 +0000
 Hashes:
   SHA256:
-    d122a364737165cbb7087a40122e79e8c856a67b81bd72cb71d06dfad3b86ab5 main/binary-all/Packages.gz
-    d122a364737165cbb7087a40122e79e8c856a67b81bd72cb71d06dfad3b86ab5 main/binary-arm64/Packages.gz
+    267763b62498dc8312d78f93bc72844ea07908b3e3ac1459cc55d74ef2490f45 main/binary-all/Packages.gz
+    267763b62498dc8312d78f93bc72844ea07908b3e3ac1459cc55d74ef2490f45 main/binary-arm64/Packages.gz
