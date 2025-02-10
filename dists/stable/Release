@@ -9,4 +9,5 @@ Description: APT repository for NeXusbFix
 Date: Mon, 10 Feb 2025 14:10:00 UTC
 Hashes:
   SHA256:
-    9bf435ec8378ef92db3dd5811d8026ec85b0e25a6d33df1ea463c67963c1ea55  main/binary-arm64/Packages.gz
+    bd5579a93348cda52a849583d139744d85cb57f8107660ac6f65d62e3487a9f6 main/binary-arm64/Packages
+    9bf435ec8378ef92db3dd5811d8026ec85b0e25a6d33df1ea463c67963c1ea55 main/binary-arm64/Packages.gz
