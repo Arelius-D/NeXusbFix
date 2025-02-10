@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_install:
+	mkdir -p debian/nexusbfix/usr/bin
+	cp usr/bin/nexusbfix debian/nexusbfix/usr/bin/
+
+override_dh_installman:
+	gzip -9n usr/share/man/man1/nexusbfix.1 -c > debian/nexusbfix/usr/share/man/man1/nexusbfix.1.gz

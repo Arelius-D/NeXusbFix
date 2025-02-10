@@ -1,0 +1,8 @@
+Origin: NeXusbFix Repo
+Label: NeXusbFix
+Suite: stable
+Codename: stable
+Version: 1.15
+Architectures: all
+Components: main
+Description: APT repository for NeXusbFix

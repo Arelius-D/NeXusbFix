@@ -1,0 +1,17 @@
+Package: nexusbfix
+Version: 1.15
+Architecture: all
+Maintainer: Arelius-D <arelius-d@outlook.com>
+Installed-Size: 19
+Depends: usbutils, iproute2, systemd
+Filename: pool/main/n/nexusbfix/nexusbfix_1.15_all.deb
+Size: 4092
+MD5sum: f388bc4f40aa016a17cb192d45e0099a
+SHA1: a22e1c40b93dc0f13fbf34a4aab4db8073e6297b
+SHA256: 2b62fa17622ad7ca93b40f8458926a4ac31e9eb77a2ef4752f67c2578cfb047e
+Section: utils
+Priority: optional
+Description: USB Device Health Check & Auto-Fix Tool
+ Diagnoses and resolves common USB device issues on Linux systems.
+ Features automated fixes, systemd reload, and network checks.
+

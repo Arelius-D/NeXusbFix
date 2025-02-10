@@ -1,0 +1,13 @@
+Source: nexusbfix
+Section: utils
+Priority: optional
+Maintainer: Arelius-D <arelius-d@outlook.com>
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.5.0
+
+Package: nexusbfix
+Architecture: all
+Depends: usbutils, iproute2, systemd, ${misc:Depends}
+Description: USB Device Health Check & Auto-Fix Tool
+ Diagnoses and resolves common USB device issues on Linux systems.
+ Features automated fixes, systemd reload, and network checks.
