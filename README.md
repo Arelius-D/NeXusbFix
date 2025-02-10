@@ -19,12 +19,18 @@ If you've ever had **USB devices randomly disconnect, stop responding, or fail t
 ---
 
 ## 📦 Installation
-NeXusbFix is installed **only** using APT.
+NeXusbFix is installed manually using the `.deb` package.
 
 ### **Install NeXusbFix**
+1️⃣ **Download the latest release:**
 ```bash
-sudo apt install nexusbfix
-```
+wget https://github.com/Arelius-D/NeXusbFix/releases/latest/download/nexusbfix_1.15_all.deb
+
+2️⃣ Install the package:
+sudo dpkg -i nexusbfix_1.15_all.deb
+
+3️⃣ Fix missing dependencies (if needed):
+sudo apt-get install -f
 
 ✅ **Done!** NeXusbFix is now installed and ready to use.
 
